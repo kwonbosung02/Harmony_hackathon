@@ -1,4 +1,16 @@
-
+#
+# Copyright 2018 KWON BO SUNG.
+#
+# Licensed under the MIT LISENSE
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.  
+#
+#  https://github.com/kwonbosung02 
+#
 from __future__ import print_function
 
 import pyzbar.pyzbar as pyzbar
@@ -34,7 +46,7 @@ channels = 1
 buffer = 2048   
 
 
-cred = credentials.Certificate('serveceKey.json')
+cred = credentials.Certificate('serveceKey.json') #You should get Firebase AdminSDK from your firebase project. 
 firebase_admin.initialize_app(cred, {
     'storageBucket' : 'hello-harmony.appspot.com'
 
