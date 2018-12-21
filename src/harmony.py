@@ -1,16 +1,4 @@
-#
-# Copyright 2018 KWON BO SUNG.
-#
-# Licensed under the MIT LISENSE
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.  
-#
-#  https://github.com/kwonbosung02 
-#
+
 from __future__ import print_function
 
 import pyzbar.pyzbar as pyzbar
@@ -35,6 +23,8 @@ from datetime import datetime
 img_key = 0
 
 dt = 0
+
+cout_loc = 0
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 music_file = "music.mp3"  
 music_file2 = "music2.mp3"
@@ -46,7 +36,7 @@ channels = 1
 buffer = 2048   
 
 
-cred = credentials.Certificate('serveceKey.json') #You should get Firebase AdminSDK from your firebase project. 
+cred = credentials.Certificate('serveceKey.json')
 firebase_admin.initialize_app(cred, {
     'storageBucket' : 'hello-harmony.appspot.com'
 
@@ -132,12 +122,14 @@ while(cap.isOpened()):
         while pygame.mixer.music.get_busy():
             clock.tick(30)
         pygame.mixer.quit()   
-
+        cout_loc = cout_loc + 1
         doc_ref = db.collection(u'users').document(key)
         doc_ref.set({
         u'hash': key,
-  
+        u'active': 'true',
+        u'count': cout_loc,
         })
+
 
 
         pygame.mixer.init(freq, bitsize, channels, buffer)
@@ -179,7 +171,14 @@ while(cap.isOpened()):
         if(time.time() > dt +1 ):
             print("사진찍습니다")
             cv2.imwrite('img1.png',frame)
-            blob = bucket.blob('img1.png')
+
+            src_cut = cv2.imread('img1.png',cv2.IMREAD_COLOR)
+
+            src_cut = src_cut[65:415, 145:495]#350
+
+            cv2.imwrite('img1.png',src_cut)
+    
+            blob = bucket.blob('img/1.png')
 
             blob.upload_from_filename(filename='img1.png')
             print(blob.public_url)
@@ -195,7 +194,7 @@ while(cap.isOpened()):
 
             dt = time.time()
             img_key = 0
-
+         
 
             
 
@@ -203,4 +202,4 @@ while(cap.isOpened()):
 
 cap.release()
 
-cv2.destroyAllWindows()
+cv2.destroyAllWindows() 
