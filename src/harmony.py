@@ -24,7 +24,6 @@ img_key = 0
 
 dt = 0
 
-cout_loc = 0
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 music_file = "music.mp3"  
 music_file2 = "music2.mp3"
@@ -121,13 +120,19 @@ while(cap.isOpened()):
         clock = pygame.time.Clock()
         while pygame.mixer.music.get_busy():
             clock.tick(30)
-        pygame.mixer.quit()   
-        cout_loc = cout_loc + 1
+        pygame.mixer.quit()
+
+        count_loc = int(db.collection(u'users').where(u'count',True).get())
+   
+        conut_loc = conut_loc + 1
+
         doc_ref = db.collection(u'users').document(key)
+
+
         doc_ref.set({
         u'hash': key,
         u'active': 'true',
-        u'count': cout_loc,
+        u'count': count_loc,
         })
 
 
